@@ -10,6 +10,9 @@ if ($username && $password && $passwordRetyped)
 {
     if ($passwordRetyped == $password)
     {
-        
+        $createUserStmt = $dbh->prepare("INSERT INTO users (username, password, online) VALUES (:username, :password, :online)");
+        $createUserStmt->bindParam(":username", $username);
+        $createUserStmt->bindParam(":password", $username);
+        $createUserStmt->bindParam(":online", 1);
     }
 }

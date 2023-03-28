@@ -1,9 +1,11 @@
 <?php
+    $env = parse_ini_file('.env');
+
     $databaseConfig = array(
-        "hostname" => "localhost",
-        "username" => "root",
-        "password" => "",
-        "database" => "chat_realtime"
+        "hostname" => $env['hostname'],
+        "username" => $env['username'],
+        "password" => $env['password'],
+        "database" => $env['database']
     );
 
     $hostname =     $databaseConfig['hostname'];
