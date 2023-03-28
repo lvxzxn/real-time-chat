@@ -11,7 +11,7 @@ if ($username && $password && $passwordRetyped)
     if ($passwordRetyped == $password)
     {
         $searchUserStmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
-        $searchUserStmt->bindParam(":username", $username);
+        $searchUserStmt->bindValue(":username", $username);
         $searchUserStmt->execute();
 
         if ($searchUserStmt->rowCount() == 0)
@@ -24,6 +24,13 @@ if ($username && $password && $passwordRetyped)
             $createUserStmt->bindValue(":online", true);
             $createUserStmt->execute();
             
+            $getUserStmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
+            $getUserStmt->bindParam(":username", $username);
+            $getUserStmt->execute();
+
+            $user = $getUserStmt->fetch();
+            
+            $_SESSION['user'] = $user;
             $_SESSION['isAuthenticated'] = true;
             $_SESSION['isOnline'] = true;
     

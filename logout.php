@@ -8,11 +8,11 @@ if (!isset($_SESSION)){
 
 include_once "./config.php";
 
-$createUserStmt = $dbh->prepare("INSERT INTO users (username, password, online) VALUES (:username, :password, :online)");
-$createUserStmt->bindValue(":username", $username);
-$createUserStmt->bindValue(":password", $password);
-$createUserStmt->bindValue(":online", true);
-$createUserStmt->execute();
+
+$updateUserStatusStmt = $dbh->prepare("UPDATE users SET online = :online WHERE username = :username");
+$updateUserStatusStmt->bindValue(":username", $_SESSION['user']['username']);
+$updateUserStatusStmt->bindValue(":online", false);
+$updateUserStatusStmt->execute();
 
 session_destroy();
 header("Location: /index.php");
