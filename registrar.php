@@ -15,42 +15,44 @@
     <div class="grid h-screen place-items-center login-form">
         <div class="max-w-full p-6 bg-zinc border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center">
             <h1 class="text-3xl font-bold"> Chat Real Time </h1>
-            <div class="flex flex-col gap-3 mt-5">
-                <div class="login-form-username">
-                    <div class="relative">
-                        <input type="text" id="username" class="block rounded-t-lg px-3 pt-5 w-full text-sm text-gray-900 bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off" />
-                        <label for="username" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-3 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
-                            Usuário
-                        </label>
+            <form action="./api/register.php" method="POST">
+                <div class="flex flex-col gap-3 mt-5">
+                    <div class="login-form-username">
+                        <div class="relative">
+                            <input type="text" name="username" id="username" class="block rounded-t-lg px-3 pt-5 w-full text-sm text-gray-900 bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off" />
+                            <label for="username" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-3 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
+                                Usuário
+                            </label>
+                        </div>
+                    </div>
+                    <div class="login-form-password">
+                        <div class="relative">
+                            <input type="password" name="password" id="password" class="block rounded-t-lg px-3 pt-5 w-full text-sm text-gray-900 bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off" />
+                            <label for="password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-3 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
+                                Senha
+                            </label>
+                        </div>
+                    </div>
+                    <div class="login-form-password-retyped">
+                        <div class="relative">
+                            <input type="password" name="password_retyped" id="password-retyped" class="block rounded-t-lg px-3 pt-5 w-full text-sm text-gray-900 bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off" />
+                            <label for="password-retyped" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-3 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
+                                Confirme a senha
+                            </label>
+                        </div>
+                    </div>
+                    <div class="login-form-register mt-2">
+                        <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-7 py-2.5 text-center mr-2 mb-2">
+                            Registrar-se
+                        </button>
+                    </div>
+                    <div class="login-form-footer">
+                        <p class="text-sm">Já tem uma conta?
+                            <a href="/index.php" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Fazer login</a>
+                        </p>
                     </div>
                 </div>
-                <div class="login-form-password">
-                    <div class="relative">
-                        <input type="password" id="password" class="block rounded-t-lg px-3 pt-5 w-full text-sm text-gray-900 bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off" />
-                        <label for="password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-3 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
-                            Senha
-                        </label>
-                    </div>
-                </div>
-                <div class="login-form-password-retyped">
-                    <div class="relative">
-                        <input type="password" id="password-retyped" class="block rounded-t-lg px-3 pt-5 w-full text-sm text-gray-900 bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off" />
-                        <label for="password-retyped" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-3 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
-                            Confirme a senha
-                        </label>
-                    </div>
-                </div>
-                <div class="login-form-register mt-2">
-                    <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-7 py-2.5 text-center mr-2 mb-2">
-                        Registrar-se
-                    </button>
-                </div>
-                <div class="login-form-footer">
-                    <p class="text-sm">Já tem uma conta?
-                        <a href="/index.php" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Fazer login</a>
-                    </p>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </body>

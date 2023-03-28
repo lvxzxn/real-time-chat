@@ -1,7 +1,14 @@
 <?php
     session_start();
-    
-    $newMessages = 0;
+
+    if (!isset($_SESSION['isAuthenticated']))
+    {
+        if (!$_SESSION['isAuthenticated'])
+        {
+            header("Location: /index.php");
+            die();
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -13,8 +13,7 @@
 
     try
     {
-        $database = new \PDO("mysql:host=$hostname;dbname=$database", $username, $password);;
-        $database->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $dbh = new \PDO("mysql:host=$hostname;dbname=$database", $username, $password);;
     }
     catch (\PDOException $exception)
     {
