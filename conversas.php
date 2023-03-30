@@ -9,7 +9,8 @@ if (!isset($_SESSION['isAuthenticated'])) {
     }
 }
 
-$getUsersOnline = $dbh->prepare("SELECT * FROM users WHERE online = 1 ORDER BY id ASC");
+$getUsersOnline = $dbh->prepare("SELECT * FROM users WHERE online = 1 AND username != :username ORDER BY id ASC");
+$getUsersOnline->bindValue(":username", $_SESSION['user']['username']);
 $getUsersOnline->execute();
 $usersOnline = $getUsersOnline->fetchAll();
 ?>
@@ -29,7 +30,7 @@ $usersOnline = $getUsersOnline->fetchAll();
     <div class="grid h-screen place-items-center text-center">
         <div class="hello-user px-7">
             <h1 class="font-bold text-3xl">
-                Olá, <?= $_SESSION['user']['username'] ?>
+                Olá, <?= $_SESSION['user']['username'] ?>!
             </h1>
             <h3 class="text-2xl">
                 Escolha com quem você quer iniciar uma conversa.
@@ -37,7 +38,7 @@ $usersOnline = $getUsersOnline->fetchAll();
             <div class="flex chat-messages justify-center mt-5">
                 <div class="max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8">
                     <div class="flex justify-center items-center text-center mb-4">
-                        <h5 class="text-xl font-bold text-gray-900">Mensagens (3)</h5>
+                        <h5 class="text-xl font-bold text-gray-900">Mensagens (<?=$getUsersOnline->rowCount()?>)</h5>
                     </div>
                     <ul class="divide-y divide-gray-200">
                         <?php foreach ($usersOnline as $user) { ?>
@@ -63,12 +64,6 @@ $usersOnline = $getUsersOnline->fetchAll();
             </div>
         </div>
     </div>
-    <script src="./assets/js/users.js?v=100"></script>
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            get_users();
-        });
-    </script>
 </body>
 
 </html>

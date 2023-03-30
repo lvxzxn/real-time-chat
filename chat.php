@@ -21,19 +21,19 @@ $userInfo = $getUserInfoStmt->fetch();
 if (!$userInfo) die("Usuário não encontrado.");
 if ($userInfo['username'] == $_SESSION['user']['username']) die();
 
-$getUserMessagesStmt_From = $dbh->prepare("SELECT * FROM users_messages WHERE sender = :senderId AND receiver = :receiverId");
-$getUserMessagesStmt_From->bindValue(":senderId", $_SESSION['user']['ID']);
-$getUserMessagesStmt_From->bindValue(":receiverId", $userInfo['ID']);
+$getUserMessages = $dbh->prepare(
+    "SELECT * FROM users_messages 
+     WHERE (sender = :senderId AND receiver = :receiverId)
+        OR (sender = :receiverId AND receiver = :senderId)
+     ORDER BY sended_at ASC"
+);
 
-$getUserMessagesStmt_To = $dbh->prepare("SELECT * FROM users_messages WHERE receiver = :receiverId AND sender = :senderId");
-$getUserMessagesStmt_To->bindValue(":receiverId", $_SESSION['user']['ID']);
-$getUserMessagesStmt_To->bindValue(":senderId", $userInfo['ID']);
+$getUserMessages->bindValue(":senderId", $_SESSION['user']['ID']);
+$getUserMessages->bindValue(":receiverId", $userInfo['ID']);
+$getUserMessages->execute();
 
-$getUserMessagesStmt_From->execute();
-$getUserMessagesStmt_To->execute();
+$userMessages = $getUserMessages->fetchAll(PDO::FETCH_ASSOC);
 
-$userMessagesFrom = $getUserMessagesStmt_From->fetchAll();
-$userMessagesTo = $getUserMessagesStmt_To->fetchAll();
 ?>
 <!DOCTYPE html>
 <html>
@@ -73,26 +73,13 @@ $userMessagesTo = $getUserMessagesStmt_To->fetchAll();
             </div>
         </div>
         <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-            <?php foreach ($userMessagesTo as $userMessageTo) { ?> 
+            <?php foreach ($userMessages as $userMessage) { ?>
                 <div class="chat-message">
-                    <div class="flex items-end justify-start">
-                        <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
+                    <div class="flex <?php echo ($userMessage['sender'] == $_SESSION['user']['ID']) ? 'justify-end' : 'justify-start'; ?> items-end">
+                        <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 <?php echo ($userMessage['sender'] == $_SESSION['user']['ID']) ? 'items-end' : 'items-start'; ?>">
                             <div>
-                                <span class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                                    <?= htmlspecialchars($userMessageTo['message']) ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
-            <?php foreach ($userMessagesFrom as $userMessageFrom) { ?> 
-                <div class="chat-message">
-                    <div class="flex items-end justify-end">
-                        <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-                            <div>
-                                <span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
-                                    <?= htmlspecialchars($userMessageFrom['message']) ?>
+                                <span class="px-4 py-2 rounded-lg inline-block <?php echo ($userMessage['sender'] == $_SESSION['user']['ID']) ? 'rounded-br-none bg-blue-600 text-white' : 'rounded-bl-none bg-gray-300 text-gray-600'; ?>">
+                                        <?= htmlspecialchars($userMessage['message']) ?>
                                 </span>
                             </div>
                         </div>
