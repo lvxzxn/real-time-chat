@@ -44,6 +44,7 @@ $userMessages = $getUserMessages->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Real Time - Chat</title>
     <link rel="stylesheet" href="./assets/style/index.css?v=5" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -124,7 +125,7 @@ $userMessages = $getUserMessages->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="flex items-end justify-end">
                                     <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
                                         <div>
-                                            <span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
+                                            <span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white">
                                                 ${message.value}
                                             </span>
                                         </div>
@@ -138,5 +139,37 @@ $userMessages = $getUserMessages->fetchAll(PDO::FETCH_ASSOC);
                     });
                 });
             }
+
+            $(document).ready(async function() {
+    setInterval(async function() {
+        const receiverId = <?=$userInfo['ID']?>;
+        const bodyForm = new FormData();
+        bodyForm.append("receiver", receiverId);
+        await fetch('./api/get_messages.php',{method:'POST', body: bodyForm}).then(function (res){
+            res.json().then(function (data){
+                var lastMessage = $('.chat-message:last-child span').text().trim();
+                if (data.message !== lastMessage) {
+                    var newMessage = `
+                    <div class="chat-message">
+                        <div class="flex ${data.sender == <?php echo $_SESSION['user']['ID'] ?> ? 'justify-end' : 'justify-start'} items-end">
+                        <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 ${data.sender == <?php echo $_SESSION['user']['ID'] ?> ? 'items-end' : 'items-start'}">
+                            <div>
+                            <span class="px-4 py-2 rounded-lg inline-block ${data.sender == <?php echo $_SESSION['user']['ID'] ?> ? 'rounded-br-none bg-blue-600 text-white' : 'rounded-bl-none bg-gray-300 text-gray-600'}">
+                                ${data.message}
+                            </span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    `;
+                    $('#messages').append(newMessage);
+                    var el = document.getElementById("messages");
+                    el.scrollTop = el.scrollHeight;
+                }
+            });
+        });
+    }, 1500);
+});
+
         </script>
 </body>
