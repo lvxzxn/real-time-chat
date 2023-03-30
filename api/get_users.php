@@ -3,6 +3,8 @@
 include_once "../config.php";
 session_start();
 
+if (!isset($_SESSION['isAuthenticated'])) die();
+
 $getUsersOnlineStmt = $dbh->prepare("SELECT * FROM users WHERE username != :username AND online = 1");
 $getUsersOnlineStmt->bindValue(":username", $_SESSION['user']['username']);
 $getUsersOnlineStmt->execute();

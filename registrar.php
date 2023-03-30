@@ -1,3 +1,15 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['isAuthenticated']) && $_SESSION['isAuthenticated'])
+{
+    header("Location: ./conversas.php");
+    die(); 
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 

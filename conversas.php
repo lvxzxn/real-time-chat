@@ -1,4 +1,5 @@
 <?php
+include_once "./config.php";
 session_start();
 
 if (!isset($_SESSION['isAuthenticated'])) {
@@ -7,6 +8,10 @@ if (!isset($_SESSION['isAuthenticated'])) {
         die();
     }
 }
+
+$getUsersOnline = $dbh->prepare("SELECT * FROM users WHERE online = 1 ORDER BY id ASC");
+$getUsersOnline->execute();
+$usersOnline = $getUsersOnline->fetchAll();
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,22 +40,24 @@ if (!isset($_SESSION['isAuthenticated'])) {
                         <h5 class="text-xl font-bold text-gray-900">Mensagens (3)</h5>
                     </div>
                     <ul class="divide-y divide-gray-200">
-                        <li class="py-3 sm:py-4">
-                            <div class="flex items-center space-x-4">
-                                <div class="flex-shrink-0">
-                                    <img class="w-8 h-8 rounded-full" src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="Neil image">
+                        <?php foreach ($usersOnline as $user) { ?>
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="Neil image">
+                                    </div>
+                                    <div class="flex-1 min-w-0 cursor-pointer">
+                                        <a class="text-sm font-medium text-gray-900 truncate" href="./chat.php?userId=<?=$user['ID']?>">
+                                            <?= $user['username'] ?>
+                                        </a>
+                                    </div>
+                                    <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                        <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
+                                        Online
+                                    </span>
                                 </div>
-                                <div class="flex-1 min-w-0 cursor-pointer">
-                                    <a class="text-sm font-medium text-gray-900 truncate">
-                                        Teloschet
-                                    </a>
-                                </div>
-                                <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                                    <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
-                                    Online
-                                </span>
-                            </div>
-                        </li>
+                            </li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>

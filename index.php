@@ -4,7 +4,7 @@ session_start();
 
 if (isset($_SESSION['isAuthenticated']) && $_SESSION['isAuthenticated'])
 {
-    header("Location: ./chat.php");
+    header("Location: ./conversas.php");
     die(); 
 }
 
