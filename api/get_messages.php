@@ -19,9 +19,9 @@ $getUserMessages->bindValue(":receiverId", $receiverId);
 
 $getUserMessages->execute();
 
-$x = $getUserMessages->fetch();
+$userMessage = $getUserMessages->fetch();
 
-if ($getUserMessages){
+if ($userMessage){
     header('Content-Type: application/json');
-    echo json_encode($x);
+    echo json_encode($userMessage);
 }
